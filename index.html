@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#7b4b32">
-  <meta name="application-version" content="1.5.0">
+  <meta name="application-version" content="1.5.1">
   <meta name="description" content="Menu trực tuyến Cọ Coffee - chọn món và đặt hàng nhanh chóng.">
   <title>Menu Cọ Coffee</title>
 
@@ -101,6 +101,99 @@
     .order.unpaid{border:2px solid #dfa34c;background:#fffaf0;box-shadow:0 8px 24px rgba(158,101,22,.10)}.order.paid{border-color:#b9dec9;background:#fbfffc}.order.cancelled-order{opacity:.82;background:#fffafa}.badge.unpaid{color:#855300;background:#fff2cc}.badge.paid{color:var(--ok);background:var(--okbg)}.locked-note{margin-top:10px;padding:9px 11px;border-radius:11px;color:var(--ok);background:var(--okbg);font-size:11px;font-weight:800;line-height:1.45}.order-section+.order-section{margin-top:18px}.order-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 9px;padding:0 2px}.order-section-title h3{margin:0;font-size:15px}.order-section-title span{min-width:28px;height:28px;display:grid;place-items:center;border-radius:50%;color:var(--p);background:var(--ps);font-size:12px;font-weight:900}.order-section.unpaid-section .order-section-title h3{color:#855300}.order-section.paid-section .order-section-title h3{color:var(--ok)}
     .bill{overflow:hidden;border:1px solid #d9c8be;border-radius:17px;background:#fff}.bill-head{padding:17px;text-align:center;border-bottom:1px dashed #d9c8be}.bill-shop{font-family:"Coiny",cursive;font-size:22px}.bill-code{margin-top:4px;color:var(--pd);font-size:15px;font-weight:950}.bill-meta{display:grid;grid-template-columns:1fr auto;gap:6px 14px;margin-top:12px;color:var(--muted);font-size:12px;text-align:left}.bill-meta strong{text-align:right;color:var(--ink)}.bill-lines{padding:8px 16px}.bill-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:12px}.bill-line:last-child{border-bottom:0}.bill-line-name{font-weight:850}.bill-line small{display:block;margin-top:3px;color:var(--muted);line-height:1.4}.bill-totals{padding:13px 16px;border-top:1px dashed #d9c8be;background:#fffaf6}.bill-total{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:18px}.bill-total strong{color:var(--pd);font-size:23px}.payment-confirm{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:13px;border:2px solid #d8c2b6;border-radius:14px;background:#fff}.payment-confirm input{width:22px;height:22px;flex:0 0 auto;margin:0;accent-color:var(--ok)}.payment-confirm span{font-size:13px;line-height:1.45}.lock-warning{margin-top:10px;padding:11px 12px;border-radius:12px;color:#7a4a13;background:#fff2cc;font-size:12px;line-height:1.5}.checkout-payment{margin-top:16px}.checkout-payment h3{margin:0 0 9px;font-size:15px}.checkout-status{margin-bottom:12px;padding:11px 12px;border-radius:12px;color:#855300;background:#fff2cc;font-size:12px;font-weight:800;line-height:1.45}.unpaid-alert{margin-bottom:14px;padding:13px 14px;border:1px solid #e1af65;border-radius:14px;color:#71470f;background:#fff6dc;font-size:12px;line-height:1.5}.unpaid-alert strong{display:block;margin-bottom:3px;font-size:13px}
     @media(max-width:640px){.order-actions{display:grid;grid-template-columns:1fr 1fr}.order-actions .btn{width:100%;min-width:0}.order-actions .btn.checkout-btn{grid-column:1/-1;min-height:46px}.bill-meta{grid-template-columns:minmax(0,1fr) auto}.checkout-payment .payment-grid{grid-template-columns:1fr}.payment-confirm{padding:12px}.modal-foot #confirmCheckoutButton{flex:1}}
+
+    /* POPUP CO GIÃN VÀ CUỘN ĐƯỢC TRÊN MỌI KÍCH THƯỚC MÀN HÌNH */
+    :root{--app-height:100vh}
+    .backdrop{
+      height:100vh;
+      height:100dvh;
+      height:var(--app-height,100vh);
+      overflow:hidden;
+      overscroll-behavior:contain;
+    }
+    .modal{
+      min-height:0;
+      max-height:calc(100vh - 36px);
+      max-height:calc(100dvh - 36px);
+      max-height:calc(var(--app-height,100vh) - 36px);
+    }
+    .modal>form{
+      min-height:0;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .modal-head,.modal-foot{flex:0 0 auto}
+    .modal-body{
+      min-height:0;
+      flex:1 1 auto;
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior-y:contain;
+      -webkit-overflow-scrolling:touch;
+      touch-action:pan-y;
+    }
+    .modal-foot{position:relative;z-index:2}
+    #orderCheckoutModal .modal{
+      height:calc(var(--app-height,100vh) - 36px);
+      max-height:800px;
+    }
+    #orderCheckoutModal .modal-body{scroll-padding-bottom:24px}
+    #orderCheckoutModal .qr-panel img{
+      max-height:min(42dvh,360px);
+      object-fit:contain;
+    }
+    @media(max-width:640px){
+      .backdrop{
+        align-items:flex-end;
+        padding:8px 0 0;
+        padding-top:max(8px,env(safe-area-inset-top));
+      }
+      .modal{
+        width:100%;
+        max-height:calc(100vh - 8px);
+        max-height:calc(100dvh - 8px);
+        max-height:calc(var(--app-height,100vh) - 8px);
+        border-radius:22px 22px 0 0;
+      }
+      #orderCheckoutModal .modal{
+        height:calc(var(--app-height,100vh) - 8px);
+        max-height:none;
+      }
+      .modal-head{padding:13px 14px}
+      .modal-title h2{font-size:18px;line-height:1.2}
+      .modal-title p{font-size:11px;line-height:1.4}
+      .modal-body{padding:13px 14px 18px}
+      .modal-foot{
+        flex-wrap:wrap;
+        gap:8px;
+        padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      }
+      #orderCheckoutModal .modal-foot .btn{
+        min-width:0;
+        min-height:46px;
+        flex:1 1 calc(50% - 4px);
+        padding:0 8px;
+        font-size:12px;
+        line-height:1.25;
+        white-space:normal;
+      }
+      #orderCheckoutModal .qr-panel img{max-height:38dvh}
+    }
+    @media(max-height:700px){
+      .modal{
+        max-height:calc(100vh - 12px);
+        max-height:calc(100dvh - 12px);
+      }
+      .modal-head{padding-top:10px;padding-bottom:10px}
+      .modal-body{padding-top:11px;padding-bottom:14px}
+      .modal-foot{padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+      #orderCheckoutModal .checkout-status{margin-bottom:8px;padding:8px 10px}
+      #orderCheckoutModal .bill-head{padding:12px}
+      #orderCheckoutModal .bill-lines{padding-top:5px;padding-bottom:5px}
+      #orderCheckoutModal .checkout-payment{margin-top:12px}
+    }
     @media print{body{background:#fff!important}.header,#menuView,#myOrdersView,#ownerOrdersView,#staffView,.toolbar,.floating-qr,.mobile-cart,.busy,.toasts,.page-head{display:none!important}main{width:100%;margin:0}.view{display:none!important}#statsView{display:block!important}#statsContent{display:block!important}.stats-report{padding:0;color:#111}.report-title{display:block;margin:0 0 18px}.panel,.metric{break-inside:avoid;box-shadow:none}.bar-value{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
   </style>
 </head>
@@ -161,6 +254,10 @@
     document.addEventListener("DOMContentLoaded",init);
 
     function init(){
+      syncViewportHeight();
+      window.addEventListener("resize",syncViewportHeight,{passive:true});
+      window.addEventListener("orientationchange",syncViewportHeight,{passive:true});
+      if(window.visualViewport)window.visualViewport.addEventListener("resize",syncViewportHeight,{passive:true});
       ["brandMark","brandName","brandStatus","statusDot","accountButton","accountAvatar","accountLabel","accountMenu","viewTabs","heroKicker","heroTitle","heroDescription","heroHours","heroPhone","heroAddress","staffNote","editOrderBanner","editOrderBannerTitle","menuSearch","refreshMenuButton","categoryList","menuContent","cartPanelTitle","cartPanelButton","cartCountDesktop","cartBodyDesktop","cartTotalDesktop","mobileCartButton","mobileCartLabel","mobileCartTotal","floatingQrButton","myOrdersSubtitle","myOrdersMetrics","myOrdersContent","ownerOrdersContent","staffContent","statsContent","statsPrintButton","statsPngButton","productModal","productModalBody","addConfiguredItemButton","cartModal","cartModalTitle","cartBodyModal","cartSecondaryButton","checkoutModeText","checkoutSubmitButton","checkoutForm","customerName","customerNameLabel","customerNameError","customerPhone","customerPhoneLabel","customerPhoneError","customerAddress","deliveryCheckBox","checkDistanceButton","distanceResult","shippingFeeField","shippingFee","checkoutQrPanel","orderNote","websiteField","loginModal","loginForm","loginUsername","loginPassword","toggleLoginPassword","shiftModal","shiftModalBody","confirmEndShiftButton","cancelModal","cancelForm","cancelOrderId","cancelReason","orderCheckoutModal","orderCheckoutForm","orderCheckoutHint","orderCheckoutBody","orderCheckoutQrPanel","paymentReceivedCheck","confirmCheckoutButton","passwordModal","passwordForm","currentPassword","newPassword","confirmPassword","receiptModal","receiptModalTitle","receiptModalBody","receiptViewOrdersButton","customerOrdersModal","customerOrdersBody","bankQrModal","bankQrBody","staffModal","staffModalTitle","staffModalHint","staffForm","staffUserId","staffDisplayName","staffUsername","staffPasswordField","staffPassword","staffPasswordModal","staffPasswordForm","staffPasswordUserId","staffPasswordHint","staffNewPassword","busyLayer","busyTitle","busyMessage","toastRegion","ordersFrom","ordersTo","ordersStatus","ordersPaymentStatus","statsFrom","statsTo"].forEach(function(id){d[id]=document.getElementById(id)});
       bind();
       setDates();
@@ -170,6 +267,7 @@
       loadMenu(false);
       restoreSession();
     }
+    function syncViewportHeight(){var h=window.visualViewport?window.visualViewport.height:window.innerHeight;if(h>0)document.documentElement.style.setProperty("--app-height",Math.round(h)+"px")}
     function bind(){
       d.accountButton.addEventListener("click",function(e){e.stopPropagation();var open=d.accountMenu.hidden;d.accountMenu.hidden=!open;d.accountButton.setAttribute("aria-expanded",String(open))});
       document.addEventListener("click",function(e){if(!d.accountMenu.contains(e.target)&&!d.accountButton.contains(e.target))closeAccount()});
@@ -596,7 +694,7 @@
     function metrics(list){return'<div class="metrics">'+list.map(function(x){return'<div class="metric '+ea(x.c||"")+'"><span>'+eh(x.l)+'</span><strong>'+eh(String(x.v))+"</strong></div>"}).join("")+"</div>"}
     function setDates(){var today=dateKey(new Date());[d.ordersFrom,d.ordersTo,d.statsFrom,d.statsTo].forEach(function(x){x.value=today})}
     function setStatsRange(range){var now=new Date();if(range==="today"){d.statsFrom.value=dateKey(now);d.statsTo.value=dateKey(now)}if(range==="month"){d.statsFrom.value=dateKey(new Date(now.getFullYear(),now.getMonth(),1));d.statsTo.value=dateKey(now)}}
-    function openModal(x){if(!x)return;x.classList.add("open");document.body.style.overflow="hidden"}
+    function openModal(x){if(!x)return;var body=x.querySelector(".modal-body");if(body)body.scrollTop=0;x.classList.add("open");document.body.style.overflow="hidden"}
     function closeModal(x){if(!x)return;x.classList.remove("open");if(x===d.customerOrdersModal){clearInterval(state.customerOrderTimer);state.customerOrderTimer=null}if(x===d.orderCheckoutModal)state.checkoutOrder=null;if(!document.querySelector(".backdrop.open"))document.body.style.overflow=""}
     function closeTopModal(){var list=document.querySelectorAll(".backdrop.open"),x=list[list.length-1];if(x&&x!==d.receiptModal)closeModal(x)}
     function closeAccount(){d.accountMenu.hidden=true;d.accountButton.setAttribute("aria-expanded","false")}
